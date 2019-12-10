@@ -39,7 +39,7 @@ use Trello\Client;
 $client = new Client();
 $client->authenticate('api_key', 'token', Client::AUTH_URL_CLIENT_ID);
 
-$boards = $client->api('member')->boards()->all();
+$boards = $client->api('member')->boards()->all()->process();
 ```
 
 The `$client` object gives you access to the entire Trello API.
@@ -62,7 +62,7 @@ $card = $manager->getCard('547440ad3f8b882bc11f0497');
 $card
     ->setName('Test card')
     ->setDescription('Test description')
-    ->save();
+    ->save()->process();
 ```
 
 ## Dispatching Trello events to your app

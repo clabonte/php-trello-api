@@ -36,12 +36,31 @@ abstract class AbstractApi implements ApiInterface
      */
     public static $fields;
 
+    private $useMethod;
+    private $usePath;
+    private $useParameters;
+    private $useRequestHeaders;
+
+
+
     /**
      * @param Client $client
      */
     public function __construct(Client $client)
     {
         $this->client = $client;
+    }
+
+    public function process(){
+        if ($this->useMethod=='request'){
+            return $this->client->getHttpClient()->request($this->usePath, null, 'HEAD', $this->useRequestHeaders, array(
+                'query' => $this->useParameters,
+            ));
+        }
+
+        $response = $this->client->getHttpClient()->{$this->useMethod}($this->usePath, $this->useParameters, $this->useRequestHeaders);
+        return ResponseMediator::getContent($response);
+
     }
 
     /**
@@ -103,38 +122,26 @@ abstract class AbstractApi implements ApiInterface
         return isset($response['_value']) ? $response['_value'] : $response;
     }
 
-    /**
-     * Send a GET request with query parameters.
-     *
-     * @param string $path           Request path.
-     * @param array  $parameters     GET parameters.
-     * @param array  $requestHeaders Request Headers.
-     *
-     * @return \Guzzle\Http\EntityBodyInterface|mixed|string
-     */
+
     protected function get($path, array $parameters = array(), $requestHeaders = array())
     {
-        $response = $this->client->getHttpClient()->get($path, $parameters, $requestHeaders);
 
-        return ResponseMediator::getContent($response);
+        $this->useMethod = 'get';
+        $this->usePath=$path;
+        $this->useParameters = $parameters;
+        $this->useRequestHeaders = $requestHeaders;
+        return $this;
     }
 
-    /**
-     * Send a HEAD request with query parameters
-     *
-     * @param string $path           Request path.
-     * @param array  $parameters     HEAD parameters.
-     * @param array  $requestHeaders Request headers.
-     *
-     * @return \Guzzle\Http\Message\Response
-     */
+
     protected function head($path, array $parameters = array(), $requestHeaders = array())
     {
-        $response = $this->client->getHttpClient()->request($path, null, 'HEAD', $requestHeaders, array(
-            'query' => $parameters,
-        ));
 
-        return $response;
+        $this->useMethod = 'request';
+        $this->usePath=$path;
+        $this->useParameters = $parameters;
+        $this->useRequestHeaders = $requestHeaders;
+        return $this;
     }
 
     /**
@@ -166,13 +173,13 @@ abstract class AbstractApi implements ApiInterface
      */
     protected function postRaw($path, $body, $requestHeaders = array())
     {
-        $response = $this->client->getHttpClient()->post(
-            $path,
-            $body,
-            $requestHeaders
-        );
 
-        return ResponseMediator::getContent($response);
+        $this->useMethod = 'request';
+        $this->usePath=$path;
+        $this->useParameters = $body;
+        $this->useRequestHeaders = $requestHeaders;
+        return $this;
+
     }
 
     /**
@@ -186,13 +193,11 @@ abstract class AbstractApi implements ApiInterface
      */
     protected function patch($path, array $parameters = array(), $requestHeaders = array())
     {
-        $response = $this->client->getHttpClient()->patch(
-            $path,
-            $this->createParametersBody($parameters),
-            $requestHeaders
-        );
-
-        return ResponseMediator::getContent($response);
+        $this->useMethod = 'patch';
+        $this->usePath=$path;
+        $this->useParameters =  $this->createParametersBody($parameters);
+        $this->useRequestHeaders = $requestHeaders;
+        return $this;
     }
 
     /**
@@ -212,13 +217,11 @@ abstract class AbstractApi implements ApiInterface
             }
         }
 
-        $response = $this->client->getHttpClient()->put(
-            $path,
-            $this->createParametersBody($parameters),
-            $requestHeaders
-        );
-
-        return ResponseMediator::getContent($response);
+        $this->useMethod = 'put';
+        $this->usePath=$path;
+        $this->useParameters =  $this->createParametersBody($parameters);
+        $this->useRequestHeaders = $requestHeaders;
+        return $this;
     }
 
     /**
@@ -232,13 +235,11 @@ abstract class AbstractApi implements ApiInterface
      */
     protected function delete($path, array $parameters = array(), $requestHeaders = array())
     {
-        $response = $this->client->getHttpClient()->delete(
-            $path,
-            $this->createParametersBody($parameters),
-            $requestHeaders
-        );
-
-        return ResponseMediator::getContent($response);
+        $this->useMethod = 'delete';
+        $this->usePath=$path;
+        $this->useParameters =  $this->createParametersBody($parameters);
+        $this->useRequestHeaders = $requestHeaders;
+        return $this;
     }
 
     /**
