@@ -16,6 +16,7 @@ use Trello\HttpClient\HttpClientInterface;
  * @method Api\Board board()
  * @method Api\Board boards()
  * @method Api\Card card()
+ * @method Api\Batch batch()
  * @method Api\Card cards()
  * @method Api\Checklist checklist()
  * @method Api\Checklist checklists()

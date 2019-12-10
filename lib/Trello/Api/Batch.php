@@ -6,7 +6,7 @@ namespace Trello\Api;
 
 class Batch extends AbstractApi
 {
-    private $list;
+    private $list = [];
 
     public function add(AbstractApi $command){
         if (count($this->list)>=10){
