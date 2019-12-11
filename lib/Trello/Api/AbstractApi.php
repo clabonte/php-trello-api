@@ -162,6 +162,15 @@ abstract class AbstractApi implements ApiInterface
         );
     }
 
+    protected function postPathParams($path, array $parameters = array(), $requestHeaders = array())
+    {
+        $queryString = '?';
+        foreach ($parameters as $key=>$param){
+            $queryString.="&$key=$param";
+        }
+        return $this->postRaw($path.$queryString,[],$requestHeaders);
+    }
+
     /**
      * Send a POST request with raw data.
      *

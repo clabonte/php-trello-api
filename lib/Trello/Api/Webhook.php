@@ -55,7 +55,7 @@ class Webhook extends AbstractApi
     {
         $this->validateRequiredParameters(array('callbackURL', 'idModel'), $params);
 
-        return $this->post($this->getPath(), $params);
+        return $this->postPathParams($this->getPath(), $params);
     }
 
     /**
