@@ -87,6 +87,19 @@ class Card extends AbstractApi
 
         return $this->post($this->getPath(), $params);
     }
+
+    /**
+     * Delete a card
+     * @link https://developers.trello.com/reference#delete-card
+     *
+     * @param $cardId
+     *
+     * @return array card info
+     */
+    public function deleteCard($cardId)
+    {
+        return $this->delete($this->getPath().'/'.rawurlencode($cardId));
+    }
     
        /**
      * Create a checklist Item
