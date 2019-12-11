@@ -13,6 +13,7 @@ class Batch extends AbstractApi
             throw new \Exception('too many items');
         }
         $this->list[] = $command;
+        return $this;
     }
 
     public function process()
