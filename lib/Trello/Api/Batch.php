@@ -13,9 +13,9 @@ class Batch extends AbstractApi
     protected $path = 'batch';
 
     public $useMethod = 'get';
-    public $usePath = '/1/batch';
-    public $useParameters;
-    public $useRequestHeaders;
+    public $usePath = '/batch';
+    public $useParameters=[];
+    public $useRequestHeaders=[];
 
 
     private $list = [];
@@ -35,12 +35,13 @@ class Batch extends AbstractApi
     public function process()
     {
 
-        $query = "&urls=";
+        $query='';
         foreach ($this->list as $listItem) {
             $query.='/'.str_replace(',','%2C',$listItem->usePath).',';
         }
-        var_dump($query);
-        $this->useParameters = $query;
+        $query = mb_substr($query,0,-1);
+
+        $this->useParameters['urls'] = $query;
         return parent::process();
     }
 
