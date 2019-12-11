@@ -36,10 +36,10 @@ abstract class AbstractApi implements ApiInterface
      */
     public static $fields;
 
-    private $useMethod;
-    private $usePath;
-    private $useParameters;
-    private $useRequestHeaders;
+    public $useMethod;
+    public $usePath;
+    public $useParameters;
+    public $useRequestHeaders;
 
 
 
