@@ -37,10 +37,10 @@ abstract class AbstractApi implements ApiInterface
     public static $fields;
 
     public $useMethod;
+    public $useRequestMethod;
     public $usePath;
     public $useParameters;
     public $useRequestHeaders;
-
 
 
     /**
@@ -51,9 +51,10 @@ abstract class AbstractApi implements ApiInterface
         $this->client = $client;
     }
 
-    public function process(){
-        if ($this->useMethod=='request'){
-            return $this->client->getHttpClient()->request($this->usePath, null, 'HEAD', $this->useRequestHeaders, array(
+    public function process()
+    {
+        if ($this->useMethod == 'request') {
+            return $this->client->getHttpClient()->request($this->usePath, null, $this->useRequestMethod, $this->useRequestHeaders, array(
                 'query' => $this->useParameters,
             ));
         }
@@ -67,8 +68,8 @@ abstract class AbstractApi implements ApiInterface
      * Catches any undefined "get{$field}" calls, and passes them
      * to the getField() if the $field is in the $this->fields property
      *
-     * @param string $method    called method
-     * @param array  $arguments array of arguments passed to called method
+     * @param string $method called method
+     * @param array $arguments array of arguments passed to called method
      *
      * @return array
      *
@@ -104,7 +105,7 @@ abstract class AbstractApi implements ApiInterface
     /**
      * Get a field value by field name
      *
-     * @param string $id    the board's id
+     * @param string $id the board's id
      * @param string $field the field
      *
      * @return mixed field value
@@ -117,7 +118,7 @@ abstract class AbstractApi implements ApiInterface
             throw new InvalidArgumentException(sprintf('There is no field named %s.', $field));
         }
 
-        $response = $this->get($this->path.'/'.rawurlencode($id).'/'.rawurlencode($field));
+        $response = $this->get($this->path . '/' . rawurlencode($id) . '/' . rawurlencode($field));
 
         return isset($response['_value']) ? $response['_value'] : $response;
     }
@@ -127,7 +128,7 @@ abstract class AbstractApi implements ApiInterface
     {
 
         $this->useMethod = 'get';
-        $this->usePath=$path;
+        $this->usePath = $path;
         $this->useParameters = $parameters;
         $this->useRequestHeaders = $requestHeaders;
         return $this;
@@ -138,7 +139,8 @@ abstract class AbstractApi implements ApiInterface
     {
 
         $this->useMethod = 'request';
-        $this->usePath=$path;
+        $this->useRequestMethod = 'HEAD';
+        $this->usePath = $path;
         $this->useParameters = $parameters;
         $this->useRequestHeaders = $requestHeaders;
         return $this;
@@ -147,9 +149,9 @@ abstract class AbstractApi implements ApiInterface
     /**
      * Send a POST request with JSON-encoded parameters.
      *
-     * @param string $path           Request path.
-     * @param array  $parameters     POST parameters to be JSON encoded.
-     * @param array  $requestHeaders Request headers.
+     * @param string $path Request path.
+     * @param array $parameters POST parameters to be JSON encoded.
+     * @param array $requestHeaders Request headers.
      *
      * @return mixed
      */
@@ -165,18 +167,18 @@ abstract class AbstractApi implements ApiInterface
     protected function postPathParams($path, array $parameters = array(), $requestHeaders = array())
     {
         $queryString = '?';
-        foreach ($parameters as $key=>$param){
-            $queryString.="&$key=$param";
+        foreach ($parameters as $key => $param) {
+            $queryString .= "&$key=$param";
         }
-        return $this->postRaw($path.$queryString,[],$requestHeaders);
+        return $this->postRaw($path . $queryString, [], $requestHeaders);
     }
 
     /**
      * Send a POST request with raw data.
      *
-     * @param string $path           Request path.
-     * @param mixed  $body           Request body.
-     * @param array  $requestHeaders Request headers.
+     * @param string $path Request path.
+     * @param mixed $body Request body.
+     * @param array $requestHeaders Request headers.
      *
      * @return \Guzzle\Http\EntityBodyInterface|mixed|string
      */
@@ -184,7 +186,8 @@ abstract class AbstractApi implements ApiInterface
     {
 
         $this->useMethod = 'request';
-        $this->usePath=$path;
+        $this->useRequestMethod = 'POST';
+        $this->usePath = $path;
         $this->useParameters = $body;
         $this->useRequestHeaders = $requestHeaders;
         return $this;
@@ -194,17 +197,17 @@ abstract class AbstractApi implements ApiInterface
     /**
      * Send a PATCH request with JSON-encoded parameters.
      *
-     * @param string $path           Request path.
-     * @param array  $parameters     POST parameters to be JSON encoded.
-     * @param array  $requestHeaders Request headers.
+     * @param string $path Request path.
+     * @param array $parameters POST parameters to be JSON encoded.
+     * @param array $requestHeaders Request headers.
      *
      * @return mixed
      */
     protected function patch($path, array $parameters = array(), $requestHeaders = array())
     {
         $this->useMethod = 'patch';
-        $this->usePath=$path;
-        $this->useParameters =  $this->createParametersBody($parameters);
+        $this->usePath = $path;
+        $this->useParameters = $this->createParametersBody($parameters);
         $this->useRequestHeaders = $requestHeaders;
         return $this;
     }
@@ -212,9 +215,9 @@ abstract class AbstractApi implements ApiInterface
     /**
      * Send a PUT request with JSON-encoded parameters.
      *
-     * @param string $path           Request path.
-     * @param array  $parameters     POST parameters to be JSON encoded.
-     * @param array  $requestHeaders Request headers.
+     * @param string $path Request path.
+     * @param array $parameters POST parameters to be JSON encoded.
+     * @param array $requestHeaders Request headers.
      *
      * @return mixed
      */
@@ -227,8 +230,8 @@ abstract class AbstractApi implements ApiInterface
         }
 
         $this->useMethod = 'put';
-        $this->usePath=$path;
-        $this->useParameters =  $this->createParametersBody($parameters);
+        $this->usePath = $path;
+        $this->useParameters = $this->createParametersBody($parameters);
         $this->useRequestHeaders = $requestHeaders;
         return $this;
     }
@@ -236,17 +239,17 @@ abstract class AbstractApi implements ApiInterface
     /**
      * Send a DELETE request with JSON-encoded parameters.
      *
-     * @param string $path           Request path.
-     * @param array  $parameters     POST parameters to be JSON encoded.
-     * @param array  $requestHeaders Request headers.
+     * @param string $path Request path.
+     * @param array $parameters POST parameters to be JSON encoded.
+     * @param array $requestHeaders Request headers.
      *
      * @return mixed
      */
     protected function delete($path, array $parameters = array(), $requestHeaders = array())
     {
         $this->useMethod = 'delete';
-        $this->usePath=$path;
-        $this->useParameters =  $this->createParametersBody($parameters);
+        $this->usePath = $path;
+        $this->useParameters = $this->createParametersBody($parameters);
         $this->useRequestHeaders = $requestHeaders;
         return $this;
     }
@@ -268,7 +271,7 @@ abstract class AbstractApi implements ApiInterface
                     if (is_bool($subParameter)) {
                         $subParameter = $subParameter ? 'true' : 'false';
                     }
-                    $parameters[$name.'/'.$subName] = $subParameter;
+                    $parameters[$name . '/' . $subName] = $subParameter;
                 }
                 unset($parameters[$name]);
             } elseif ($parameter instanceof DateTime) {
@@ -292,7 +295,7 @@ abstract class AbstractApi implements ApiInterface
      * Validate parameters array
      *
      * @param string[] $required required properties (array keys)
-     * @param array $params   array to check for existence of the required keys
+     * @param array $params array to check for existence of the required keys
      *
      * @throws MissingArgumentException if a required parameter is missing
      */
@@ -309,8 +312,8 @@ abstract class AbstractApi implements ApiInterface
      * Validate allowed parameters array
      * Checks whether the passed parameters are allowed
      *
-     * @param string[]        $allowed allowed properties
-     * @param array|string $params  array to check
+     * @param string[] $allowed allowed properties
+     * @param array|string $params array to check
      * @param string $paramName
      *
      * @return array array of validated parameters
@@ -342,7 +345,7 @@ abstract class AbstractApi implements ApiInterface
      * the keys in a given array
      *
      * @param string[] $atLeastOneOf allowed properties
-     * @param array $params       array to check
+     * @param array $params array to check
      *
      * @return boolean
      *
