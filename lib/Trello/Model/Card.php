@@ -143,6 +143,10 @@ class Card extends AbstractObject implements CardInterface
             return $this->data['due'];
         }
 
+        if (null === $this->data['due']){
+            return null;
+        }
+
         return new \DateTime($this->data['due']);
     }
 
