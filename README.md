@@ -18,7 +18,7 @@ Uses [Trello API v1](https://trello.com/docs/index.html). The object API is very
 
 ## Requirements
 
-* PHP >= 5.3.2 with [cURL](http://php.net/manual/en/book.curl.php) extension,
+* PHP >= 7.1 with [cURL](http://php.net/manual/en/book.curl.php) extension,
 * [Guzzle](https://github.com/guzzle/guzzle) library,
 * (optional) [PHPUnit](https://phpunit.de) to run tests.
 

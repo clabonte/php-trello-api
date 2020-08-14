@@ -99,7 +99,7 @@ interface CardInterface extends ObjectInterface
     /**
      * Get due date
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getDueDate();
 
