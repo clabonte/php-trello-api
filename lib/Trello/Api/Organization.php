@@ -64,4 +64,13 @@ class Organization extends AbstractApi
         return new Organization\Memberships($this->client);
     }
 
+    /**
+     * Organization Members API
+     *
+     * @return Organization\Members
+     */
+    public function members()
+    {
+        return new Organization\Members($this->client);
+    }
 }
