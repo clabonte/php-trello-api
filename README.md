@@ -27,7 +27,7 @@ Uses [Trello API v1](https://trello.com/docs/index.html). The object API is very
 The recommended way is using [composer](http://getcomposer.org):
 
 ```bash
-$ composer require cdaguerre/php-trello-api:@dev
+$ composer require clabonte/php-trello-api:@dev
 ```
 However, `php-trello-api` follows the PSR-0 naming conventions, which means you can easily integrate `php-trello-api` class loading in your own autoloader.
 
