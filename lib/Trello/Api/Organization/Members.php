@@ -4,26 +4,26 @@
 namespace Trello\Api\Organization;
 
 /**
- * Trello Organization Memberships API
+ * Trello Organization Members API
  * @link https://developer.atlassian.com/cloud/trello/rest/api-group-organizations
  *
  */
-class Memberships extends \Trello\Api\AbstractApi
+class Members extends \Trello\Api\AbstractApi
 {
     /**
      * Base path of board power ups api
      * @var string
      */
-    protected $path = 'organizations/#id#/memberships';
+    protected $path = 'organizations/#id#/members';
 
     /**
-     * Get Memberships of an Organization
-     * @link https://developer.atlassian.com/cloud/trello/rest/api-group-organizations/#api-organizations-id-memberships-get
+     * Get the Members of an Organization
+     * @link https://developer.atlassian.com/cloud/trello/rest/api-group-organizations/#api-organizations-id-members-get
      *
      * @param string $id     the organization's id
      * @param array  $params optional parameters
      *
-     * @return Memberships
+     * @return Members
      */
     public function all($id, array $params = array())
     {

@@ -53,4 +53,15 @@ class Organization extends AbstractApi
     {
         return $this->get($this->getPath().'/'.rawurlencode($id), $params);
     }
+
+    /**
+     * Organization Memberships API
+     *
+     * @return Organization\Memberships
+     */
+    public function memberships()
+    {
+        return new Organization\Memberships($this->client);
+    }
+
 }
