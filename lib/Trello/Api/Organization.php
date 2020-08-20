@@ -6,7 +6,7 @@ namespace Trello\Api;
  * Trello Organization API
  * @link https://trello.com/docs/api/organization
  *
- * Not implemented.
+ * Partially implemented.
  */
 class Organization extends AbstractApi
 {
@@ -47,11 +47,25 @@ class Organization extends AbstractApi
      * @param string $id     the organization's id
      * @param array  $params optional attributes
      *
-     * @return array
+     * @return Organization
      */
     public function show($id, array $params = array())
     {
         return $this->get($this->getPath().'/'.rawurlencode($id), $params);
+    }
+
+    /**
+     * Get Boards in an Organization
+     * @link https://developer.atlassian.com/cloud/trello/rest/api-group-organizations/#api-organizations-id-boards-get
+     *
+     * @param string $id     the organization's id
+     * @param array  $params optional attributes
+     *
+     * @return Organization
+     */
+    public function boards($id, array $params = array())
+    {
+        return $this->get($this->getPath().'/'.rawurlencode($id).'/boards', $params);
     }
 
     /**
